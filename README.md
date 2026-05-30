@@ -43,7 +43,7 @@ Unlike traditional shuffle playback, Smart Shuffle remembers previously played i
 Add the Smart Shuffle plugin repository URL to Jellyfin:
 
 ```text
-https://github.com/shalebridge/jellyfin-smart-shuffle/blob/main/manifest.json
+https://raw.githubusercontent.com/shalebridge/jellyfin-smart-shuffle/refs/heads/main/manifest.json
 ```
 
 Then install:
