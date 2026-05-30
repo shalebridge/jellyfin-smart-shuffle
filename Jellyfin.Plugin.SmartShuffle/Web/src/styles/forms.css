@@ -1,0 +1,7 @@
+#smartShuffleDashboardRoot .inputContainer {
+    margin-top: 1rem;
+}
+
+#smartShuffleDashboardRoot input[is="emby-input"] {
+    max-width: 32rem;
+}

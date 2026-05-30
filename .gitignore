@@ -1,0 +1,6 @@
+/Jellyfin.Plugin.SmartShuffle/obj
+/Jellyfin.Plugin.SmartShuffle/bin
+/.vs
+/artifacts
+/Jellyfin.Plugin.SmartShuffle/Web/node_modules
+/build-release.bat

@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace>Jellyfin.Plugin.SmartShuffle</RootNamespace>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <Nullable>enable</Nullable>
+    
+    <Title>Smart Shuffle</Title>
+    <Authors>shalebridge</Authors>
+    <Version>1.0.0.0</Version>
+
+    <Description>Smart Shuffle for Jellyfin TV episodes, collections, and playlists using persistent per-user shuffle buckets.</Description>
+    <RepositoryUrl>https://github.com/shalebridge/jellyfin-smart-shuffle</RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Web\client.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Jellyfin.Controller" Version="10.11.8" />
+    <PackageReference Include="Jellyfin.Model" Version="10.11.8" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.11" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  
+    <EmbeddedResource Include="Configuration/configPage.html" />
+    <EmbeddedResource Include="Configuration\smartshuffle-dashboard.js" />
+    <EmbeddedResource Include="Configuration\smartshuffle-dashboard.css" />
+    <EmbeddedResource Include="Web/client.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Web\src\styles\" />
+  </ItemGroup>
+
+</Project>

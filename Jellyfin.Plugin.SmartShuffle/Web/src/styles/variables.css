@@ -1,0 +1,11 @@
+#smartShuffleDashboardRoot {
+    --ss-sidebar-width: 180px;
+    --ss-header-height: 64px;
+    --ss-bg: var(--theme-body-bg, transparent);
+    --ss-text: currentColor;
+    --ss-text-muted: rgba(255, 255, 255, 0.65);
+    --ss-border: rgba(255, 255, 255, 0.12);
+    --ss-border-strong: rgba(255, 255, 255, 0.18);
+    --ss-hover: rgba(255, 255, 255, 0.08);
+    --ss-accent: var(--theme-primary-color, #00a4dc);
+}
