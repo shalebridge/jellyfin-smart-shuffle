@@ -2,6 +2,7 @@ import type {
   SmartShuffleBucketInfo,
   SmartShuffleBucketsResponse,
   SmartShuffleExcludedResponse,
+  SmartShuffleInfoResponse,
   SmartShuffleItemInfo
 } from './types';
 
@@ -28,6 +29,36 @@ type MaybePascalItem = Partial<SmartShuffleItemInfo> & {
   EpisodeNumber?: number | null;
   DisplayTitle?: string;
 };
+
+type MaybePascalInfo = Partial<SmartShuffleInfoResponse> & {
+  Name?: string;
+  Version?: string;
+  Description?: string;
+  Id?: string;
+};
+
+function normalizeInfoResponse(response: unknown): SmartShuffleInfoResponse {
+  const typed = response as MaybePascalInfo;
+
+  return {
+    name: typed.name ?? typed.Name ?? '',
+    version: typed.version ?? typed.Version ?? '',
+    description: typed.description ?? typed.Description ?? '',
+    id: typed.id ?? typed.Id ?? ''
+  };
+}
+
+export async function getPluginInfo(): Promise<SmartShuffleInfoResponse> {
+  const apiClient = getApiClient();
+
+  const result = await apiClient.ajax<unknown>({
+    type: 'GET',
+    url: apiClient.getUrl('SmartShuffle/Info'),
+    dataType: 'json'
+  });
+
+  return normalizeInfoResponse(await unwrapJson<unknown>(result));
+}
 
 function normalizeBucket(bucket: MaybePascalBucket): SmartShuffleBucketInfo {
   return {

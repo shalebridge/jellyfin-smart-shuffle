@@ -37,6 +37,20 @@ public sealed class SmartShuffleController(
         });
     }
 
+    [HttpGet("SmartShuffle/Info")]
+    public ActionResult<SmartShuffleInfoResponse> Info()
+    {
+        var plugin = Plugin.Instance;
+
+        return new SmartShuffleInfoResponse
+        {
+            Name = plugin?.Name ?? "Smart Shuffle",
+            Version = plugin?.Version?.ToString() ?? GetType().Assembly.GetName().Version?.ToString() ?? string.Empty,
+            Description = plugin?.Description ?? string.Empty,
+            Id = plugin?.Id.ToString("D") ?? string.Empty
+        };
+    }
+
     [HttpPost("SmartShuffle/Queue")]
     public ActionResult<SmartShuffleQueueResponse> Queue(
         [FromQuery] Guid userId,
@@ -554,6 +568,17 @@ public sealed class SmartShuffleController(
 
         public double Weight { get; set; }
     }
+}
+
+public sealed class SmartShuffleInfoResponse
+{
+    public string Name { get; set; } = string.Empty;
+
+    public string Version { get; set; } = string.Empty;
+
+    public string Description { get; set; } = string.Empty;
+
+    public string Id { get; set; } = string.Empty;
 }
 
 public sealed class SmartShuffleExcludedResponse
