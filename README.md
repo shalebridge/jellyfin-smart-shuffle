@@ -1,4 +1,9 @@
 ﻿# Jellyfin Smart Shuffle
+![GitHub Release](https://img.shields.io/github/v/release/shalebridge/jellyfin-smart-shuffle)
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/shalebridge/jellyfin-smart-shuffle/total?color=green)
+![GitHub last commit](https://img.shields.io/github/last-commit/shalebridge/jellyfin-smart-shuffle/main?logo=semantic-release&logoColor=orange&label=Last%20Updated&color=AA5CC3&cacheSeconds=3600)
+![Static Badge](https://img.shields.io/badge/Jellyfin%20Version-10.10%2C%2010.11-AA5CC3?logo=jellyfin&logoColor=00A4DC)
+
 
 Smart Shuffle is a Jellyfin plugin that adds persistent, weighted shuffle playback for TV series, seasons, playlists, and collections.
 
@@ -32,7 +37,7 @@ Unlike traditional shuffle playback, Smart Shuffle remembers previously played i
 # Requirements
 
 * Jellyfin 10.11.x
-* File Transformation plugin. Smart Shuffle depends on this for Web UI injection.
+* [File Transformation plugin](https://github.com/IAmParadox27/jellyfin-plugin-file-transformation). Smart Shuffle depends on this for Web UI injection.
 
 ---
 
@@ -156,6 +161,12 @@ bin/Release/net9.0/
 ```
 
 ---
+
+# Thanks
+Portions of this code were based on or inspired by the following Jellyfin plugins:
+* [Intro Skipper](https://github.com/intro-skipper/intro-skipper)
+* [JavaScript Injector](https://github.com/n00bcodr/Jellyfin-JavaScript-Injector)
+* [MediaBar Enhanced](https://github.com/DI0IK/jellyfin-plugin-media-bar-enhanced/tree/main)
 
 # Contributing
 
