@@ -18,28 +18,34 @@ public static class SmartShuffleJavaScriptHelper
         <script>
             (function() {
                 'use strict';
-                const fetchPrivateScripts = () => {
-                    if (window.ApiClient && typeof window.ApiClient.getCurrentUserId === 'function' && window.ApiClient.getCurrentUserId() && window.ApiClient.serverInfo) {
+
+                function fetchPrivateScripts() {
+                    if (
+                        window.ApiClient &&
+                        typeof window.ApiClient.getCurrentUserId === 'function' &&
+                        window.ApiClient.getCurrentUserId() &&
+                        window.ApiClient.serverInfo
+                    ) {
                         clearInterval(authInterval);
 
                         ApiClient.fetch({
                             url: ApiClient.getUrl('SmartShuffle/private.js?v=" + timestamp + @"'),
                             type: 'GET',
                             dataType: 'text'
-                        }).then(scriptText => {
+                        }).then(function(scriptText) {
                             if (scriptText && scriptText.trim().length > 0) {
-                                const scriptElement = document.createElement('script');
-                                scriptElement.textContent = scriptText;
+                                var scriptElement = document.createElement('script');
+                                scriptElement.text = scriptText;
                                 document.head.appendChild(scriptElement);
                                 console.log('Smart Shuffle: Private script loaded successfully.');
                             }
-                        }).catch(err => {
+                        }).catch(function(err) {
                             console.error('Smart Shuffle: Failed to load private script.', err);
                         });
                     }
-                };
+                }
 
-                const authInterval = setInterval(fetchPrivateScripts, 300);
+                var authInterval = setInterval(fetchPrivateScripts, 300);
             })();
         </script>";
 
