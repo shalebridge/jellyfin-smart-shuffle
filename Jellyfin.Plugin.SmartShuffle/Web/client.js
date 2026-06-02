@@ -7,7 +7,6 @@
     function isDetailsPage() {
         const hash = (window.location.hash || '').toLowerCase();
     
-        //return hash.includes('/details') && hash.includes('id=');
         return hash.includes('details') && hash.includes('id=');
     }
     
@@ -31,7 +30,7 @@
         style.textContent = `
             .smartShuffleButton {
                 margin-left: 0.5em;
-                border-radius: 999px;
+                border-radius: 1000px;
                 font-weight: 600;
                 letter-spacing: 0.02em;
             }
@@ -61,21 +60,26 @@
             || document.querySelector('.itemDetailPage');
     }
 
-    //function getResponseValue(response, camelName, pascalName) {
-    //    return response[camelName] || response[pascalName];
-    //}
     function getResponseValue(response, camelName, pascalName) {
         if (!response) {
             return undefined;
         }
-
-        return response[camelName] ?? response[pascalName];
+    
+        return response[camelName] !== undefined && response[camelName] !== null
+            ? response[camelName]
+            : response[pascalName];
     }
 
     function removeButton() {
-        document.querySelectorAll('#' + BUTTON_ID).forEach(function (button) {
-            button.remove();
-        });
+        var buttons = document.querySelectorAll('#' + BUTTON_ID);
+    
+        for (var i = 0; i < buttons.length; i++) {
+            var button = buttons[i];
+    
+            if (button && button.parentNode) {
+                button.parentNode.removeChild(button);
+            }
+        }
     }
 
     async function getSmartShuffleScope(apiClient) {
@@ -99,9 +103,6 @@
         if (item.Type === 'Season') {
             return { scopeId: item.Id, scopeType: 'season', title: item.Name || item.Id };
         }
-        //if (item.Type === 'Season') {
-        //    return null;
-        //}
 
         if (item.Type === 'Episode' && item.SeriesId) {
             return {
@@ -216,7 +217,6 @@
             return;
         }
 
-        //if (container.querySelector('#' + BUTTON_ID)) {
         if (document.querySelector('#' + BUTTON_ID)) {
             return;
         }
@@ -238,10 +238,6 @@
         container.appendChild(button);
     }
 
-    //window.addEventListener('hashchange', schedule);
-    //window.addEventListener('popstate', schedule);
-    //window.addEventListener('pageshow', schedule);
-    //document.addEventListener('visibilitychange', schedule);
     function routeChanged() {
         removeButton();
         schedule();
@@ -254,16 +250,6 @@
 
     let scheduleTimer = null;
 
-    //function schedule() {
-    //    if (scheduleTimer) {
-    //        clearTimeout(scheduleTimer);
-    //    }
-    //
-    //    scheduleTimer = setTimeout(function () {
-    //        scheduleTimer = null;
-    //        addButton();
-    //    }, 750);
-    //}
     function schedule() {
         if (scheduleTimer) {
             clearTimeout(scheduleTimer);
@@ -279,13 +265,6 @@
         }, 250);
     }
     
-    //const observer = new MutationObserver(function () {
-    //    if (!isDetailsPage() || isBlockedPage()) {
-    //        return;
-    //    }
-    //
-    //    schedule();
-    //});
     const observer = new MutationObserver(function () {
         if (!isDetailsPage() || isBlockedPage()) {
             removeButton();

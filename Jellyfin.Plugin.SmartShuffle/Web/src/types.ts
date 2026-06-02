@@ -32,6 +32,13 @@ export interface SmartShuffleExcludedResponse {
   items: SmartShuffleItemInfo[];
 }
 
+export interface SmartShuffleInfoResponse {
+  name: string;
+  version: string;
+  description: string;
+  id: string;
+}
+
 export interface JellyfinApiClient {
   getCurrentUserId(): string;
   getUrl(path: string): string;

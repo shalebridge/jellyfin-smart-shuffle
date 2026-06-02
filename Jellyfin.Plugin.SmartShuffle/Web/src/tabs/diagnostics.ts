@@ -1,4 +1,4 @@
-import { ping } from '../api';
+import { getPluginInfo, ping } from '../api';
 import { createButton, createElement, getErrorText, writeResult } from '../dom';
 import type { Tab } from '../types';
 
@@ -24,7 +24,7 @@ function renderDiagnostics(container: HTMLElement): void {
   const diagnostics = createElement('pre', { className: 'ss-pre' });
 
   refreshButton.addEventListener('click', () => {
-    diagnostics.textContent = getDiagnosticsText();
+    void refreshDiagnostics(diagnostics);
   });
 
   pingButton.addEventListener('click', () => {
@@ -35,15 +35,35 @@ function renderDiagnostics(container: HTMLElement): void {
   section.append(title, actions, diagnostics);
   container.append(section);
 
-  diagnostics.textContent = getDiagnosticsText();
+  void refreshDiagnostics(diagnostics);
 }
 
-function getDiagnosticsText(): string {
+async function refreshDiagnostics(target: HTMLElement): Promise<void> {
+  target.textContent = 'Loading diagnostics...';
+
+  try {
+    target.textContent = await getDiagnosticsText();
+  } catch (error) {
+    const errorText = await getErrorText(error);
+    target.textContent = 'Diagnostics failed:\n' + errorText;
+  }
+}
+
+async function getDiagnosticsText() : Promise<string> {
   const lines: string[] = [];
 
   lines.push('ApiClient available: ' + Boolean(window.ApiClient));
   lines.push('PlaybackManager exposed: ' + Boolean(window.PlaybackManager));
   lines.push('Current hash: ' + (window.location.hash || ''));
+
+  try {
+    const info = await getPluginInfo();
+    lines.push('Plugin name: ' + info.name);
+    lines.push('Plugin version: ' + info.version);
+    lines.push('Plugin ID: ' + info.id);
+  } catch {
+    lines.push('Plugin info: unavailable');
+  }
 
   try {
     if (window.ApiClient && typeof window.ApiClient.getCurrentUserId === 'function') {
