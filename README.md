@@ -1,7 +1,7 @@
 ﻿# Jellyfin Smart Shuffle
 ![GitHub Release](https://img.shields.io/github/v/release/shalebridge/jellyfin-smart-shuffle)
 ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/shalebridge/jellyfin-smart-shuffle/total?color=green)
-![GitHub last commit](https://img.shields.io/github/last-commit/shalebridge/jellyfin-smart-shuffle/main?logo=semantic-release&logoColor=orange&label=Last%20Updated&color=AA5CC3&cacheSeconds=3600)
+![GitHub last commit](https://img.shields.io/github/last-commit/shalebridge/jellyfin-smart-shuffle/main?logoColor=orange&label=Last%20Updated&color=AA5CC3&cacheSeconds=3600)
 ![Static Badge](https://img.shields.io/badge/Jellyfin%20Version-10.10%2C%2010.11-AA5CC3?logo=jellyfin&logoColor=00A4DC)
 
 

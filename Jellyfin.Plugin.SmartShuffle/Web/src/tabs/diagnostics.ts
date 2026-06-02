@@ -58,7 +58,6 @@ async function getDiagnosticsText() : Promise<string> {
 
   try {
     const info = await getPluginInfo();
-
     lines.push('Plugin name: ' + info.name);
     lines.push('Plugin version: ' + info.version);
     lines.push('Plugin ID: ' + info.id);
