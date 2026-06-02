@@ -631,27 +631,6 @@ public sealed class SmartShuffleItemInfo
     public string DisplayTitle { get; set; } = string.Empty;
 }
 
-public sealed class SmartShuffleResponse
-{
-    public string ItemId { get; set; } = string.Empty;
-
-    public string ItemName { get; set; } = string.Empty;
-
-    public string ItemType { get; set; } = string.Empty;
-
-    public string SeriesName { get; set; } = string.Empty;
-
-    public string EpisodeTitle { get; set; } = string.Empty;
-
-    public int? SeasonNumber { get; set; }
-
-    public int? EpisodeNumber { get; set; }
-
-    public string DisplayTitle { get; set; } = string.Empty;
-
-    public string DetailsUrl { get; set; } = string.Empty;
-}
-
 public sealed class SmartShuffleBucketsResponse
 {
     public int Count { get; set; }
