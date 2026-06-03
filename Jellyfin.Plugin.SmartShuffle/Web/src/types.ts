@@ -1,3 +1,14 @@
+export interface PluginConfiguration {
+  excludeSpecials: boolean;
+  enableExcludeTag: boolean;
+  prioritizeUnplayed: boolean;
+  penalizeRecentlyPlayed: boolean;
+  recentlyPlayedNearWindowDays: number;
+  recentlyPlayedNearWeightMultiplier: number;
+  recentlyPlayedFarWindowDays: number;
+  recentlyPlayedFarWeightMultiplier: number;
+}
+
 export interface SmartShuffleBucketInfo {
   scopeKey: string;
   scopeType: string;
@@ -46,6 +57,8 @@ export interface JellyfinApiClient {
     type: string;
     url: string;
     dataType?: string;
+    contentType?: string;
+    data?: string;
   }): Promise<T>;
 }
 

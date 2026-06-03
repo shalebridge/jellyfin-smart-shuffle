@@ -1,4 +1,5 @@
 ﻿using Jellyfin.Data.Enums;
+using Jellyfin.Plugin.SmartShuffle.Configuration;
 using Jellyfin.Plugin.SmartShuffle.Services;
 using Jellyfin.Plugin.SmartShuffle.Store;
 using MediaBrowser.Controller.Entities;
@@ -227,6 +228,28 @@ public sealed class SmartShuffleController(
         });
     }
 
+    [HttpGet("SmartShuffle/Configuration")]
+    public ActionResult<PluginConfiguration> GetConfiguration()
+    {
+        return Plugin.Instance?.Configuration ?? new PluginConfiguration();
+    }
+
+    [HttpPost("SmartShuffle/Configuration")]
+    public ActionResult SaveConfiguration([FromBody] PluginConfiguration configuration)
+    {
+        if (Plugin.Instance is null)
+        {
+            return StatusCode(500, "Plugin instance is not available.");
+        }
+
+        Plugin.Instance.UpdateConfiguration(configuration);
+
+        return Ok(new
+        {
+            saved = true
+        });
+    }
+
     private SmartShuffleBucketInfo EnrichBucketSummary(SmartShuffleBucketSummary summary)
     {
         var (ScopeType, ScopeId) = ParseScopeKey(summary.ScopeKey);
@@ -380,21 +403,34 @@ public sealed class SmartShuffleController(
         int playCount,
         DateTime? lastPlayedDate)
     {
-        // Strongly favor items with lower Jellyfin play counts.
-        var weight = 1.0 / Math.Pow(playCount + 1, 2);
+        var config = Plugin.Instance?.Configuration ?? new PluginConfiguration();
 
-        // Slightly penalize recently played items.
-        if (lastPlayedDate.HasValue)
+        var weight = config.PrioritizeLessPlayed ? 1.0 / Math.Pow(playCount + 1, 2) : 1.0;
+
+        if (config.PenalizeRecentlyPlayed && lastPlayedDate.HasValue)
         {
+            var nearWindowDays = Math.Max(0, config.RecentlyPlayedNearWindowDays);
+            var farWindowDays = Math.Max(nearWindowDays, config.RecentlyPlayedFarWindowDays);
+
+            var nearMultiplier = Math.Clamp(
+                config.RecentlyPlayedNearWeightMultiplier,
+                0.0,
+                1.0);
+
+            var farMultiplier = Math.Clamp(
+                config.RecentlyPlayedFarWeightMultiplier,
+                0.0,
+                1.0);
+
             var daysSincePlayed = (DateTime.UtcNow - lastPlayedDate.Value.ToUniversalTime()).TotalDays;
 
-            if (daysSincePlayed < 7)
+            if (daysSincePlayed < nearWindowDays)
             {
-                weight *= 0.25;
+                weight *= nearMultiplier;
             }
-            else if (daysSincePlayed < 30)
+            else if (daysSincePlayed < farWindowDays)
             {
-                weight *= 0.5;
+                weight *= farMultiplier;
             }
         }
 
@@ -440,9 +476,16 @@ public sealed class SmartShuffleController(
     }
 
     private const string ExcludeTag = "SmartShuffleExclude";
-    private static bool IsSmartShufflePlayable(BaseItem item)
+    private bool IsSmartShufflePlayable(BaseItem item)
     {
-        if (HasSmartShuffleExcludeTag(item))
+        var config = Plugin.Instance?.Configuration ?? new PluginConfiguration();
+
+        if (config.EnableExcludeTag && HasSmartShuffleExcludeTag(item))
+        {
+            return false;
+        }
+
+        if (config.ExcludeSpecials && item is Episode episode && IsSpecialEpisode(episode))
         {
             return false;
         }
@@ -457,6 +500,11 @@ public sealed class SmartShuffleController(
     {
         return item.Tags?.Any(tag =>
             string.Equals(tag, ExcludeTag, StringComparison.OrdinalIgnoreCase)) == true;
+    }
+
+    private static bool IsSpecialEpisode(Episode episode)
+    {
+        return episode.ParentIndexNumber == 0;
     }
 
     private bool IsSupportedSmartShuffleScope(Guid scopeId, string scopeType)

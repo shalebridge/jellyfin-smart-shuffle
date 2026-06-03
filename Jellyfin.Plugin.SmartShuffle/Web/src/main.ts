@@ -8,12 +8,14 @@ import { Router } from './components/router';
 import type { Tab } from './types';
 import { queuesTab } from './tabs/queues';
 import { excludedTab } from './tabs/excluded';
+import { configurationTab } from './tabs/configuration';
 import { informationTab } from './tabs/information';
 import { diagnosticsTab } from './tabs/diagnostics';
 
 const tabs: readonly Tab[] = [
   queuesTab,
   excludedTab,
+  configurationTab,
   informationTab,
   diagnosticsTab
 ];
