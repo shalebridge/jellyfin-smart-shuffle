@@ -1,7 +1,7 @@
 export interface PluginConfiguration {
   excludeSpecials: boolean;
   enableExcludeTag: boolean;
-  prioritizeUnplayed: boolean;
+  prioritizeLessPlayed: boolean;
   penalizeRecentlyPlayed: boolean;
   recentlyPlayedNearWindowDays: number;
   recentlyPlayedNearWeightMultiplier: number;
