@@ -413,14 +413,10 @@ public sealed class SmartShuffleController(
             var farWindowDays = Math.Max(nearWindowDays, config.RecentlyPlayedFarWindowDays);
 
             var nearMultiplier = Math.Clamp(
-                config.RecentlyPlayedNearWeightMultiplier,
-                0.0,
-                1.0);
+                config.RecentlyPlayedNearWeightMultiplier, 0.0, 1.0);
 
             var farMultiplier = Math.Clamp(
-                config.RecentlyPlayedFarWeightMultiplier,
-                0.0,
-                1.0);
+                config.RecentlyPlayedFarWeightMultiplier,0.0, 1.0);
 
             var daysSincePlayed = (DateTime.UtcNow - lastPlayedDate.Value.ToUniversalTime()).TotalDays;
 

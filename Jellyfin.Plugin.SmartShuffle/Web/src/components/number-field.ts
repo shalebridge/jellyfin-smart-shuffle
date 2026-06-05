@@ -62,8 +62,5 @@ export function numberField(opts: NumberFieldOptions): NumberField {
     root.append(description);
   }
 
-  return {
-    root,
-    input
-  };
+  return { root, input };
 }

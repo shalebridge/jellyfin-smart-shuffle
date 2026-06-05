@@ -44,8 +44,5 @@ export function checkboxField(opts: CheckboxFieldOptions): CheckboxField {
     root.append(description);
   }
 
-  return {
-    root,
-    input
-  };
+  return { root, input };
 }

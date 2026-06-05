@@ -16,7 +16,6 @@ public class SmartShufflePluginServiceRegistrator : IPluginServiceRegistrator
         serviceCollection.AddSingleton<SmartShuffleStore>();
         serviceCollection.AddSingleton<SmartShuffleService>();
         serviceCollection.AddSingleton<IScheduledTask, SmartShuffleStartupService>();
-
         serviceCollection.AddHostedService<SmartShufflePlaybackTrackingService>();
     }
 }

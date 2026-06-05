@@ -27,7 +27,7 @@ public sealed class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages
     public override string Name => "Smart Shuffle";
 
     public override string Description =>
-    "Smart Shuffle for Jellyfin TV episodes, collections, and playlists using persistent per-user shuffle buckets.";
+    "Smart Shuffle for Jellyfin TV episodes, collections, and playlists using persistent per-user shuffle queues.";
 
     public override Guid Id => Guid.Parse("72757a4c-51a7-4042-b7d5-3ce7a869ee27");
 

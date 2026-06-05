@@ -62,15 +62,15 @@ export interface JellyfinApiClient {
   }): Promise<T>;
 }
 
-export interface Tab {
-  id: string;
-  label: string;
-  render(container: HTMLElement): void | Promise<void>;
-}
-
 declare global {
   interface Window {
     ApiClient?: JellyfinApiClient;
     PlaybackManager?: unknown;
   }
+}
+
+export interface Tab {
+  id: string;
+  label: string;
+  render(container: HTMLElement): void | Promise<void>;
 }
