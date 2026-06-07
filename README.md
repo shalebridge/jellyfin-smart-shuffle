@@ -91,9 +91,9 @@ Playback uses Jellyfin's native playback queue system.
 
 ---
 
-# Configuration Page
+# Dashboard Page
 
-The plugin configuration page includes:
+The plugin dashboard page includes:
 
 * Current queue summary:
   * Number of active queues
@@ -103,8 +103,12 @@ The plugin configuration page includes:
   * Last updated date
   * Queue reset controls
 * List of excluded media tagged with `SmartShuffleExclude`.
+* Functional configuration:
+  * Exclude Specials - Skips `Season 0` or other special episodes when building queue.
+  * Enable Exclude Tag - Enables the use of `SmartShuffleExclude` to exclude certain media.
+  * Prioritize Less-Played - When enabled, will favor media with lower or no play count.
+  * Penalize Recently Played - Uses a time window and weight multipliers to reduce the chance of recently played items appearing early in a new queue.
 * General information.
-* Diagnostics
 
 This allows administrators to inspect and clear shuffle state.
 
