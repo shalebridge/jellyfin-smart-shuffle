@@ -20,18 +20,14 @@ public sealed class SmartShufflePlaybackTrackingService(
     public Task StartAsync(CancellationToken cancellationToken)
     {
         _sessionManager.PlaybackStart += OnPlaybackStart;
-
         _logger.LogInformation("SmartShuffle playback tracking started.");
-
         return Task.CompletedTask;
     }
 
     public Task StopAsync(CancellationToken cancellationToken)
     {
         _sessionManager.PlaybackStart -= OnPlaybackStart;
-
         _logger.LogInformation("SmartShuffle playback tracking stopped.");
-
         return Task.CompletedTask;
     }
 

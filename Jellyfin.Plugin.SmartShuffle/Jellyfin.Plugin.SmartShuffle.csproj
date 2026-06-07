@@ -9,9 +9,9 @@
     
     <Title>Smart Shuffle</Title>
     <Authors>shalebridge</Authors>
-    <Version>1.0.1.0</Version>
+    <Version>1.1.0.0</Version>
 
-    <Description>Smart Shuffle for Jellyfin TV episodes, collections, and playlists using persistent per-user shuffle buckets.</Description>
+    <Description>Smart Shuffle for Jellyfin TV episodes, collections, and playlists using persistent per-user shuffle queues.</Description>
     <RepositoryUrl>https://github.com/shalebridge/jellyfin-smart-shuffle</RepositoryUrl>
   </PropertyGroup>
 

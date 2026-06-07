@@ -1,4 +1,5 @@
 import type {
+  PluginConfiguration,
   SmartShuffleBucketInfo,
   SmartShuffleBucketsResponse,
   SmartShuffleExcludedResponse,
@@ -30,12 +31,57 @@ type MaybePascalItem = Partial<SmartShuffleItemInfo> & {
   DisplayTitle?: string;
 };
 
+type MaybePascalPluginConfiguration = Partial<PluginConfiguration> & {
+  ExcludeSpecials?: boolean;
+  EnableExcludeTag?: boolean;
+  PrioritizeLessPlayed?: boolean;
+  PenalizeRecentlyPlayed?: boolean;
+  RecentlyPlayedNearWindowDays?: number;
+  RecentlyPlayedNearWeightMultiplier?: number;
+  RecentlyPlayedFarWindowDays?: number;
+  RecentlyPlayedFarWeightMultiplier?: number;
+};
+
 type MaybePascalInfo = Partial<SmartShuffleInfoResponse> & {
   Name?: string;
   Version?: string;
   Description?: string;
   Id?: string;
 };
+
+function normalizePluginConfiguration(response: unknown): PluginConfiguration {
+  const typed = response as MaybePascalPluginConfiguration;
+
+  return {
+    excludeSpecials: typed.excludeSpecials ?? typed.ExcludeSpecials ?? true,
+    enableExcludeTag: typed.enableExcludeTag ?? typed.EnableExcludeTag ?? true,
+    prioritizeLessPlayed: typed.prioritizeLessPlayed ?? typed.PrioritizeLessPlayed ?? true,
+    penalizeRecentlyPlayed:
+      typed.penalizeRecentlyPlayed ?? typed.PenalizeRecentlyPlayed ?? true,
+    recentlyPlayedNearWindowDays:
+      typed.recentlyPlayedNearWindowDays ?? typed.RecentlyPlayedNearWindowDays ?? 7,
+    recentlyPlayedNearWeightMultiplier:
+      typed.recentlyPlayedNearWeightMultiplier ??
+      typed.RecentlyPlayedNearWeightMultiplier ??
+      0.25,
+    recentlyPlayedFarWindowDays:
+      typed.recentlyPlayedFarWindowDays ?? typed.RecentlyPlayedFarWindowDays ?? 30,
+    recentlyPlayedFarWeightMultiplier:
+      typed.recentlyPlayedFarWeightMultiplier ??
+      typed.RecentlyPlayedFarWeightMultiplier ??
+      0.5
+  };
+}
+
+export function getPluginConfiguration(): Promise<PluginConfiguration> {
+  return getJson('SmartShuffle/Configuration', normalizePluginConfiguration);
+}
+
+export function savePluginConfiguration(
+  configuration: PluginConfiguration
+): Promise<void> {
+  return postJson('SmartShuffle/Configuration', configuration);
+}
 
 function normalizeInfoResponse(response: unknown): SmartShuffleInfoResponse {
   const typed = response as MaybePascalInfo;
@@ -48,16 +94,8 @@ function normalizeInfoResponse(response: unknown): SmartShuffleInfoResponse {
   };
 }
 
-export async function getPluginInfo(): Promise<SmartShuffleInfoResponse> {
-  const apiClient = getApiClient();
-
-  const result = await apiClient.ajax<unknown>({
-    type: 'GET',
-    url: apiClient.getUrl('SmartShuffle/Info'),
-    dataType: 'json'
-  });
-
-  return normalizeInfoResponse(await unwrapJson<unknown>(result));
+export function getPluginInfo(): Promise<SmartShuffleInfoResponse> {
+  return getJson('SmartShuffle/Info', normalizeInfoResponse);
 }
 
 function normalizeBucket(bucket: MaybePascalBucket): SmartShuffleBucketInfo {
@@ -144,59 +182,92 @@ async function unwrapJson<T>(value: unknown): Promise<T> {
   return value as T;
 }
 
+async function getJson<T>(
+  path: string,
+  normalize: (response: unknown) => T
+): Promise<T> {
+  const apiClient = getApiClient();
+
+  const result = await apiClient.ajax<unknown>({
+    type: 'GET',
+    url: apiClient.getUrl(path),
+    dataType: 'json'
+  });
+
+  return normalize(await unwrapJson<unknown>(result));
+}
+
+async function postJson(
+  path: string,
+  data?: unknown
+): Promise<void> {
+  const apiClient = getApiClient();
+
+  const request: {
+    type: string;
+    url: string;
+    dataType: string;
+    contentType?: string;
+    data?: string;
+  } = {
+    type: 'POST',
+    url: apiClient.getUrl(path),
+    dataType: 'json'
+  };
+
+  if (data !== undefined) {
+    request.contentType = 'application/json';
+    request.data = JSON.stringify(data);
+  }
+
+  await apiClient.ajax(request);
+}
+
+function withQuery(
+  path: string,
+  params: Record<string, string>
+): string {
+  const searchParams = new URLSearchParams();
+
+  for (const [key, value] of Object.entries(params)) {
+    searchParams.set(key, value);
+  }
+
+  return path + '?' + searchParams.toString();
+}
+
 export function getCurrentUserId(): string {
   return getApiClient().getCurrentUserId();
 }
 
-export async function getQueues(): Promise<SmartShuffleBucketsResponse> {
+export function getQueues(): Promise<SmartShuffleBucketsResponse> {
   const apiClient = getApiClient();
-  const params = new URLSearchParams();
 
-  params.set('userId', apiClient.getCurrentUserId());
-
-  const result = await apiClient.ajax<unknown>({
-    type: 'GET',
-    url: apiClient.getUrl('SmartShuffle/Buckets?' + params.toString()),
-    dataType: 'json'
-  });
-
-  return normalizeBucketsResponse(await unwrapJson<unknown>(result));
+  return getJson(
+    withQuery('SmartShuffle/Buckets', {
+      userId: apiClient.getCurrentUserId()
+    }),
+    normalizeBucketsResponse
+  );
 }
 
-export async function resetQueue(scopeKey: string): Promise<void> {
+export function resetQueue(scopeKey: string): Promise<void> {
   const apiClient = getApiClient();
-  const params = new URLSearchParams();
 
-  params.set('userId', apiClient.getCurrentUserId());
-  params.set('scopeKey', scopeKey);
-
-  await apiClient.ajax({
-    type: 'POST',
-    url: apiClient.getUrl('SmartShuffle/ResetBucket?' + params.toString()),
-    dataType: 'json'
-  });
+  return postJson(
+    withQuery('SmartShuffle/ResetBucket', {
+      userId: apiClient.getCurrentUserId(),
+      scopeKey
+    })
+  );
 }
 
-export async function getExcludedItems(): Promise<SmartShuffleExcludedResponse> {
-  const apiClient = getApiClient();
-
-  const result = await apiClient.ajax<unknown>({
-    type: 'GET',
-    url: apiClient.getUrl('SmartShuffle/Excluded'),
-    dataType: 'json'
-  });
-
-  return normalizeExcludedResponse(await unwrapJson<unknown>(result));
+export function getExcludedItems(): Promise<SmartShuffleExcludedResponse> {
+  return getJson('SmartShuffle/Excluded', normalizeExcludedResponse);
 }
 
-export async function ping(): Promise<unknown> {
-  const apiClient = getApiClient();
-
-  const result = await apiClient.ajax<unknown>({
-    type: 'GET',
-    url: apiClient.getUrl('SmartShuffle/Ping'),
-    dataType: 'json'
+export function ping(): Promise<unknown> {
+  return getJson('SmartShuffle/Ping', function (response) {
+    return response;
   });
-
-  return unwrapJson<unknown>(result);
 }

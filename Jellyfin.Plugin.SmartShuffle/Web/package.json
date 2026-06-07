@@ -1,10 +1,11 @@
 {
   "name": "jellyfin-plugin-smartshuffle-dashboard",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "module",
   "scripts": {
     "build": "vite build",
+    "build:debug": "vite build --mode development",
     "watch": "vite build --watch",
     "typecheck": "tsc --noEmit"
   },

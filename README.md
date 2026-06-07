@@ -1,4 +1,8 @@
 ﻿# Jellyfin Smart Shuffle
+<p align="center">
+	<img alt="Logo" src="./images/logo.png" />
+</p>
+
 ![GitHub Release](https://img.shields.io/github/v/release/shalebridge/jellyfin-smart-shuffle)
 ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/shalebridge/jellyfin-smart-shuffle/total?color=green)
 ![GitHub last commit](https://img.shields.io/github/last-commit/shalebridge/jellyfin-smart-shuffle/main?logoColor=orange&label=Last%20Updated&color=AA5CC3&cacheSeconds=3600)
@@ -14,7 +18,7 @@ Unlike traditional shuffle playback, Smart Shuffle remembers previously played i
 # Features
 
 * Persistent per-user shuffle database.
-* Weighted randomization favoring less-played and least-recently-played episodes.
+* Configurable weighted randomization favoring less-played and least-recently-played episodes.
 * Playback using Jellyfin's native playback system:
 	* Web UI integration with a native Smart Shuffle button.
 	* Playback queue integration for seamless episode transitions

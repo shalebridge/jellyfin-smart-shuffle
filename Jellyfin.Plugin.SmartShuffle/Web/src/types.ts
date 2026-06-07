@@ -1,3 +1,14 @@
+export interface PluginConfiguration {
+  excludeSpecials: boolean;
+  enableExcludeTag: boolean;
+  prioritizeLessPlayed: boolean;
+  penalizeRecentlyPlayed: boolean;
+  recentlyPlayedNearWindowDays: number;
+  recentlyPlayedNearWeightMultiplier: number;
+  recentlyPlayedFarWindowDays: number;
+  recentlyPlayedFarWeightMultiplier: number;
+}
+
 export interface SmartShuffleBucketInfo {
   scopeKey: string;
   scopeType: string;
@@ -46,13 +57,9 @@ export interface JellyfinApiClient {
     type: string;
     url: string;
     dataType?: string;
+    contentType?: string;
+    data?: string;
   }): Promise<T>;
-}
-
-export interface Tab {
-  id: string;
-  label: string;
-  render(container: HTMLElement): void | Promise<void>;
 }
 
 declare global {
@@ -60,4 +67,10 @@ declare global {
     ApiClient?: JellyfinApiClient;
     PlaybackManager?: unknown;
   }
+}
+
+export interface Tab {
+  id: string;
+  label: string;
+  render(container: HTMLElement): void | Promise<void>;
 }
