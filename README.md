@@ -3,11 +3,13 @@
 	<img alt="Logo" src="./images/logo.png" />
 </p>
 
+<div align="center">
+
 ![GitHub Release](https://img.shields.io/github/v/release/shalebridge/jellyfin-smart-shuffle)
 ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/shalebridge/jellyfin-smart-shuffle/total?color=green)
 ![GitHub last commit](https://img.shields.io/github/last-commit/shalebridge/jellyfin-smart-shuffle/main?logoColor=orange&label=Last%20Updated&color=AA5CC3&cacheSeconds=3600)
 ![Static Badge](https://img.shields.io/badge/Jellyfin%20Version-10.10%2C%2010.11-AA5CC3?logo=jellyfin&logoColor=00A4DC)
-
+</div>
 
 Smart Shuffle is a Jellyfin plugin that adds persistent, weighted shuffle playback for TV series, seasons, playlists, and collections.
 
@@ -132,19 +134,19 @@ Smart Shuffle stores persistent queue state in SQLite. Tracked information inclu
 
 # Development
 
-## Build Config Typescript Page
+### Build Config Typescript Page
 
 ```bash
 Web/npm run build
 ```
 
-## Build Plugin
+### Build Plugin
 
 ```bash
 dotnet build -c Release
 ```
 
-## Release Output
+### Release Output
 
 ```text
 bin/Release/net9.0/
