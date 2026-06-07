@@ -6,6 +6,7 @@
     "overview": "Adds a Smart Shuffle button that builds persistent per-user shuffle buckets and favors less-played content.",
     "owner": "shalebridge",
     "category": "General",
+    "imageUrl": "https://raw.githubusercontent.com/shalebridge/jellyfin-smart-shuffle/main/images/logo.png",
     "versions": [
       {
         "version": "1.0.1.0",
