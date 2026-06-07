@@ -17,7 +17,7 @@ const tabs: readonly Tab[] = [
   excludedTab,
   configurationTab,
   informationTab,
-  diagnosticsTab
+  ...(import.meta.env.MODE === 'development' ? [diagnosticsTab] : [])
 ];
 
 const ROOT_SELECTOR = '#smartShuffleDashboardRoot';

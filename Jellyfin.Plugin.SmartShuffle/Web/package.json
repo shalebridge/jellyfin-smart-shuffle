@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
+    "build:debug": "vite build --mode development",
     "watch": "vite build --watch",
     "typecheck": "tsc --noEmit"
   },
