@@ -13,8 +13,6 @@ Smart Shuffle is a Jellyfin plugin that adds persistent, weighted shuffle playba
 
 Unlike traditional shuffle playback, Smart Shuffle remembers previously played items and avoids immediate repeats until the entire queue has been exhausted.
 
----
-
 # Features
 
 * Persistent per-user shuffle database.
@@ -36,14 +34,10 @@ Unlike traditional shuffle playback, Smart Shuffle remembers previously played i
 * Queue inspection and reset.
 * Automatic queue refill after all items are played.
 
----
-
 # Requirements
 
 * Jellyfin 10.11.x
 * [File Transformation plugin](https://github.com/IAmParadox27/jellyfin-plugin-file-transformation). Smart Shuffle depends on this for Web UI injection.
-
----
 
 # Installation
 
@@ -62,8 +56,6 @@ Dashboard -> Plugins -> Catalog -> Smart Shuffle
 ```
 
 Restart the server to load the plugin. You may need to refresh the web page client to see changes using <b>CTRL+F5</b> or by restarting the client.
-
----
 
 # Usage
 
@@ -89,13 +81,11 @@ Selecting it will:
 
 Playback uses Jellyfin's native playback queue system.
 
----
-
 # Dashboard Page
 
 The plugin dashboard page includes:
 
-* Current queue summary:
+* Current queue summary. This also allows administrators to inspect and clear shuffle state:
   * Number of active queues
   * Number of tracked items 
   * Overall Play counts
@@ -109,10 +99,6 @@ The plugin dashboard page includes:
   * Prioritize Less-Played - When enabled, will favor media with lower or no play count.
   * Penalize Recently Played - Uses a time window and weight multipliers to reduce the chance of recently played items appearing early in a new queue.
 * General information.
-
-This allows administrators to inspect and clear shuffle state.
-
----
 
 # Client Compatibility
 
@@ -134,8 +120,6 @@ Because this plugin relies on injecting JavaScript and CSS into the web interfac
 | **Swiftfin** (iOS/tvOS) | :x: | **Not supported.** Uses a native Swift UI. |
 | **Kodi** (via Jellyfin Addon) | :x: | **Not supported.** Uses Kodi's native skinning engine. |
 
----
-
 # Database
 
 Smart Shuffle stores persistent queue state in SQLite. Tracked information includes:
@@ -145,8 +129,6 @@ Smart Shuffle stores persistent queue state in SQLite. Tracked information inclu
 * Queue position
 * Played status
 * Playback timestamps
-
----
 
 # Development
 
@@ -167,8 +149,6 @@ dotnet build -c Release
 ```text
 bin/Release/net9.0/
 ```
-
----
 
 # Thanks
 Portions of this code were based on or inspired by the following Jellyfin plugins:
