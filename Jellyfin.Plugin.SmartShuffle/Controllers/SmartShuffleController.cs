@@ -471,7 +471,6 @@ public sealed class SmartShuffleController(
         return result;
     }
 
-    private const string ExcludeTag = "SmartShuffleExclude";
     private bool IsSmartShufflePlayable(BaseItem item)
     {
         var config = Plugin.Instance?.Configuration ?? new PluginConfiguration();
@@ -491,8 +490,6 @@ public sealed class SmartShuffleController(
         return item is Episode
             || typeName.Equals("Movie", StringComparison.OrdinalIgnoreCase);
     }
-
-    private const string DefaultExcludeTag = "SmartShuffleExclude";
     
     private static bool HasSmartShuffleExcludeTag(BaseItem item)
     {
@@ -517,11 +514,13 @@ public sealed class SmartShuffleController(
                 string.Equals(itemTag, excludeTag, StringComparison.OrdinalIgnoreCase)));
     }
     
+    private const string ExcludeTag = "SmartShuffleExclude";
+    
     private static List<string> GetConfiguredExcludeTags(PluginConfiguration config)
     {
         var tags = new List<string>
         {
-            DefaultExcludeTag
+            ExcludeTag
         };
     
         if (!string.IsNullOrWhiteSpace(config.AdditionalExcludeTags))
@@ -534,9 +533,7 @@ public sealed class SmartShuffleController(
                     .Where(tag => !string.IsNullOrWhiteSpace(tag)));
         }
     
-        return tags
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .ToList();
+        return [.. tags.Distinct(StringComparer.OrdinalIgnoreCase)];
     }
 
     private static bool IsSpecialEpisode(Episode episode)
