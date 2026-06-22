@@ -8,6 +8,8 @@ public class PluginConfiguration : BasePluginConfiguration
 
     public bool EnableExcludeTag { get; set; } = true;
 
+    public string AdditionalExcludeTags { get; set; } = string.Empty;
+
     public bool PrioritizeLessPlayed { get; set; } = true;
 
     public bool PenalizeRecentlyPlayed { get; set; } = true;

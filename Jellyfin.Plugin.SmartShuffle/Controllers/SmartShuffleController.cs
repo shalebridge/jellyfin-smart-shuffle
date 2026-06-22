@@ -492,10 +492,51 @@ public sealed class SmartShuffleController(
             || typeName.Equals("Movie", StringComparison.OrdinalIgnoreCase);
     }
 
+    private const string DefaultExcludeTag = "SmartShuffleExclude";
+    
     private static bool HasSmartShuffleExcludeTag(BaseItem item)
     {
-        return item.Tags?.Any(tag =>
-            string.Equals(tag, ExcludeTag, StringComparison.OrdinalIgnoreCase)) == true;
+        var config = Plugin.Instance?.Configuration ?? new PluginConfiguration();
+    
+        if (!config.EnableExcludeTag)
+        {
+            return false;
+        }
+    
+        var itemTags = item.Tags;
+    
+        if (itemTags is null || itemTags.Length == 0)
+        {
+            return false;
+        }
+    
+        var excludeTags = GetConfiguredExcludeTags(config);
+    
+        return itemTags.Any(itemTag =>
+            excludeTags.Any(excludeTag =>
+                string.Equals(itemTag, excludeTag, StringComparison.OrdinalIgnoreCase)));
+    }
+    
+    private static List<string> GetConfiguredExcludeTags(PluginConfiguration config)
+    {
+        var tags = new List<string>
+        {
+            DefaultExcludeTag
+        };
+    
+        if (!string.IsNullOrWhiteSpace(config.AdditionalExcludeTags))
+        {
+            tags.AddRange(
+                config.AdditionalExcludeTags
+                    // Do I want to give the user all these options for tag delimiters?
+                    .Split([',', ';', '\r', '\n'], StringSplitOptions.RemoveEmptyEntries)
+                    .Select(tag => tag.Trim())
+                    .Where(tag => !string.IsNullOrWhiteSpace(tag)));
+        }
+    
+        return tags
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToList();
     }
 
     private static bool IsSpecialEpisode(Episode episode)
