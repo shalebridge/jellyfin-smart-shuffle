@@ -382,7 +382,6 @@ public sealed class SmartShuffleController(
             .Select(item =>
             {
                 var data = _userDataManager.GetUserData(user, item);
-
                 var playCount = data?.PlayCount ?? 0;
                 var lastPlayedDate = data?.LastPlayedDate;
 
@@ -404,7 +403,6 @@ public sealed class SmartShuffleController(
         DateTime? lastPlayedDate)
     {
         var config = Plugin.Instance?.Configuration ?? new PluginConfiguration();
-
         var weight = config.PrioritizeLessPlayed ? 1.0 / Math.Pow(playCount + 1, 2) : 1.0;
 
         if (config.PenalizeRecentlyPlayed && lastPlayedDate.HasValue)
